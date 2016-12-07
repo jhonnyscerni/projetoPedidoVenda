@@ -1,0 +1,89 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+
+	<f:metadata>
+		<o:viewParam name="usuario" value="#{cadastroUsuarioBean.usuario}" />
+	</f:metadata>
+	<ui:define name="titulo">#{cadastroUsuarioBean.editando ? 'Edição de usuario' : 'Novo usuario'}</ui:define>
+
+	<ui:define name="corpo">
+
+		<h:form id="frmUsuario">
+			<h1>#{cadastroUsuarioBean.editando ? 'Edição de usuario' : 'Novo
+				usuario'}</h1>
+
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/usuarios/CadastroUsuario" />
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						action="#{cadastroUsuarioBean.salvar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/usuarios/PesquisaUsuarios" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" id="painel"
+				style="width: 100%; margin-top: 20px" columnClasses="rotulo, campo">
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="20" maxlength="20"
+					value="#{cadastroUsuarioBean.usuario.nome}" />
+
+				<p:outputLabel value="Email" for="email" />
+				<p:inputText id="email" size="60" maxlength="80"
+					value="#{cadastroUsuarioBean.usuario.email}" />
+
+				<p:outputLabel value="Senha" for="senha"></p:outputLabel>
+				<p:password id="senha" value="#{cadastroUsuarioBean.usuario.senha}"
+					feedback="true" />
+
+
+			</p:panelGrid>
+			
+			<p:panelGrid columns="2" id="painelGrupo" 
+			style="margin-top: 20px; width: 100%" columnClasses="rotulo, campo" styleClass="ui-panelgrid-blank">
+
+			<p:selectOneMenu style="width: 150px"
+					value="#{cadastroUsuarioBean.grupoSelecionado}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{cadastroUsuarioBean.grupoRaizes}" var="usuarioGrupo" 
+						itemLabel="#{usuarioGrupo.nome}" itemValue="#{usuarioGrupo}" />
+			</p:selectOneMenu>
+			
+			<p:commandButton value="Adicionar grupo" action="#{cadastroUsuarioBean.adicionarGrupo}" update="gruposTable"  process="@form"/>
+
+		</p:panelGrid>
+	
+		<p:dataTable id="gruposTable" value="#{cadastroUsuarioBean.usuario.grupos}"
+			var="grupo" style="margin-top: 20px"
+			emptyMessage="Nenhum grupo encontrado." rows="20" paginator="true"
+			paginatorAlwaysVisible="false" paginatorPosition="bottom">
+			<p:column headerText="Grupo">
+				<h:outputText value="#{grupo.descricao}"/>
+			</p:column>
+			<p:column style="text-align:center; width: 70px">
+				<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="confirmacaoExclusao.show()"
+					process="@this" update=":frmUsuario:confirmacaoExclusaoDialog">
+					<f:setPropertyActionListener target="#{cadastroUsuarioBean.grupoSelecionado}" value="#{grupo}" />				
+				</p:commandButton>
+			</p:column>
+			
+		</p:dataTable>
+		
+		
+		<p:confirmDialog header="Exclusão de grupo" message="Tem certeza que deseja excluir o grupo?" 
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+				<p:button value="Não" onclick="confirmacaoExclusao.hide(); return false;" />
+				<p:commandButton value="Sim" oncomplete="confirmacaoExclusao.hide();" action="#{cadastroUsuarioBean.removerGrupo}" process="@this"
+	    			update=":frmUsuario:gruposTable" />			
+		</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

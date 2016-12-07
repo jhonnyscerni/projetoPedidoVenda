@@ -1,0 +1,89 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <ui:define name="titulo">Pesquisa de clientes</ui:define>
+    
+    <ui:define name="corpo">
+    	<h:form id="frmPesquisa">
+	    	<h1>Pesquisa de clientes</h1>
+	    		    	<p:messages autoUpdate="true" closable="true" />
+	    	
+	    	
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton value="Pesquisar" action="#{pesquisaClientesBean.pesquisar}"
+	    			update="@form"/>
+	    		</p:toolbarGroup>
+	    		<p:toolbarGroup align="right">
+	    		<p:button value="Novo" outcome="/clientes/CadastroCliente" />
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:panelGrid columns="2" id="painel" style="width: 100%; margin-top: 20px"
+	    			columnClasses="rotulo, campo">
+	    		    		
+	    		<p:outputLabel value="Nome" for="nome"/>
+	    		<p:inputText id="nome"  size="40" value="#{pesquisaClientesBean.filtro.nome}" />
+	    		<p:outputLabel value="E-mail" for="email"/>
+	    		<p:inputText id="email"  size="40" value="#{pesquisaClientesBean.filtro.email}" />
+	    		
+	    		<p:outputLabel value="Tipo de Pessoa" for="tipo"></p:outputLabel>
+	    		<p:selectOneMenu id="tipo" value="#{pesquisaClientesBean.filtro.tipo}">
+	    		<f:selectItem itemLabel="Selecione" itemValue=""></f:selectItem>
+	    		<f:selectItems value="#{pesquisaClientesBean.tipos}" var="tipo" itemLabel="#{tipo.descricao}" itemValue="#{tipo}"></f:selectItems>
+	    		</p:selectOneMenu>
+	    		
+	    	     
+	    	    
+	    	</p:panelGrid>
+	    	
+	    	<p:dataTable id="clientesTable" value="#{pesquisaClientesBean.clientesFiltrados}" var="cliente"
+	    		style="margin-top: 20px" emptyMessage="Nenhum usuario encontrado."
+	    		rows="20" paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+	    		
+	    		<p:column headerText="Nome" style="width: 300px">
+	    			<h:outputText value="#{cliente.nome}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Email" style="text-align: center; width: 190px">
+	    			<h:outputText value="#{cliente.email}"/>
+	    		</p:column>
+	    		
+	    		<p:column headerText="Email" style="text-align: center; width: 190px">
+	    			<h:outputText value="#{cliente.tipo.descricao}"/>
+	    		</p:column>
+	    		
+	    		
+	    		<p:column style="text-align: center; width: 50px">
+	    			<p:button icon="ui-icon-pencil" title="Editar" outcome="/clientes/CadastroCliente">
+	    			<f:param name="cliente" value="#{cliente.id}"></f:param>
+	    			</p:button>
+	    		</p:column>
+	    		
+	    			<p:column style="width: 100px; text-align: center">
+	    			<p:commandButton icon="ui-icon-trash" title="Excluir" oncomplete="PF('confirmacaoExclusao').show()"
+	    					process="@this" update=":frmPesquisa:confirmacaoExclusaoDialog">
+	    				<f:setPropertyActionListener target="#{pesquisaClientesBean.clienteSelecionado}" 
+	    					value="#{cliente}" />
+	    			</p:commandButton>
+	    		</p:column>
+	    	   
+	    		
+	    	</p:dataTable>
+	    	
+	    	<p:confirmDialog header="Exclusão de Cliente" 
+	    		message="Tem certeza que deseja excluir o Cliente #{pesquisaClientesBean.clienteSelecionado.nome}?"
+	    		widgetVar="confirmacaoExclusao"	id="confirmacaoExclusaoDialog">
+	    		<p:button value="Não" onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	    		<p:commandButton value="Sim" oncomplete="PF('confirmacaoExclusao').hide();"
+	    			action="#{pesquisaClientesBean.excluir}" process="@this"
+	    			update=":frmPesquisa:clientesTable" />
+	    	</p:confirmDialog>
+	    	
+    	</h:form>
+    </ui:define>
+</ui:composition>
