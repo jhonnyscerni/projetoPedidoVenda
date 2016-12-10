@@ -1,0 +1,6 @@
+<!-- <p:autoComplete id="cliente" size="40" dropdown="true"
+				value="#{cadastroPedidoBean.pedido.cliente}"
+				completeMethod="#{cadastroPedidoBean.completarCliente}"
+				var="cliente" itemLabel="#{cliente.nome}" itemValue="#{cliente}"
+				forceSelection="true"
+				disabled="#{cadastroPedidoBean.pedido.naoAlteravel}" /> -->

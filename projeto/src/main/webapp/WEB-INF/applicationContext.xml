@@ -42,6 +42,7 @@
 			access="hasAnyRole('VENDEDORES', 'AUXILIARES', 'ADMINISTRADORES')" />
 		<intercept-url pattern="/produtos/**" access="hasAnyRole('ADMINISTRADORES')" />
 		<intercept-url pattern="/clientes/**" access="hasAnyRole('ADMINISTRADORES')" />
+		<intercept-url pattern="/dialogos/**" access="hasAnyRole('ADMINISTRADORES')" />
 		<intercept-url pattern="/usuarios/**" access="hasAnyRole('ADMINISTRADORES')" />
 		<intercept-url pattern="/**" access="denyAll" />
 

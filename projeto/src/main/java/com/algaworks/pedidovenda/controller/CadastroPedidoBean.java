@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
+import org.primefaces.event.SelectEvent;
 
 import com.algaworks.pedidovenda.model.Cliente;
 import com.algaworks.pedidovenda.model.EnderecoEntrega;
@@ -65,6 +67,10 @@ public class CadastroPedidoBean implements Serializable {
 			
 			this.recalcularPedido();
 		}
+	}
+	
+	public void clienteSelecionado(SelectEvent event) {
+		pedido.setCliente((Cliente) event.getObject());
 	}
 	
 	private void limpar() {
@@ -188,6 +194,14 @@ public class CadastroPedidoBean implements Serializable {
 
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+	
+	@NotBlank
+	public String getNomeCliente() {
+		return pedido.getCliente() == null ? null : pedido.getCliente().getNome();
+	}
+	
+	public void setNomeCliente(String nome) {
 	}
 
 }
