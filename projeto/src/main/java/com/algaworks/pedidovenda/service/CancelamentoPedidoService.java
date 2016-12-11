@@ -23,7 +23,7 @@ public class CancelamentoPedidoService implements Serializable {
 	private EstoqueService estoqueService;
 	
 	@Transactional
-	public Pedido cancelar(Pedido pedido) {
+	public Pedido cancelar(Pedido pedido) throws NegocioException {
 		// TODO Auto-generated method stub
 		pedido = this.pedidos.porId(pedido.getId());
 		if (pedido.isNaoCancelavel()) {

@@ -65,7 +65,7 @@ public class ClienteRepository implements Serializable {
 	}
 
 	@Transactional
-	public void remover(Cliente cliente)
+	public void remover(Cliente cliente) throws NegocioException
 	{
 		try {
 			cliente = porId(cliente.getId());

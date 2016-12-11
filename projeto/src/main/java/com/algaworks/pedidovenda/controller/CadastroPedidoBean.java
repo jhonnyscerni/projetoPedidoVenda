@@ -24,6 +24,7 @@ import com.algaworks.pedidovenda.repository.ClienteRepository;
 import com.algaworks.pedidovenda.repository.ProdutoRepository;
 import com.algaworks.pedidovenda.repository.UsuarioRepository;
 import com.algaworks.pedidovenda.service.CadastroPedidoService;
+import com.algaworks.pedidovenda.service.NegocioException;
 import com.algaworks.pedidovenda.util.jsf.FacesUtil;
 import com.algaworks.pedidovenda.validation.SKU;
 
@@ -89,7 +90,12 @@ public class CadastroPedidoBean implements Serializable {
 			this.pedido = this.cadastroPedidoService.salvar(this.pedido);
 		
 			FacesUtil.addInfoMessage("Pedido salvo com sucesso!");
-		} finally {
+		} 
+		 catch (NegocioException e) {
+			// TODO Auto-generated catch block
+			FacesUtil.addErrorMessage(e.getMessage());
+		}
+		finally {
 			this.pedido.adicionarItemVazio();
 		}
 	}

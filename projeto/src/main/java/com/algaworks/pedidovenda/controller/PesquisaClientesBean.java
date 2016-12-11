@@ -13,6 +13,7 @@ import com.algaworks.pedidovenda.model.Cliente;
 import com.algaworks.pedidovenda.model.TipoPessoa;
 import com.algaworks.pedidovenda.repository.ClienteRepository;
 import com.algaworks.pedidovenda.repository.filter.ClienteFilter;
+import com.algaworks.pedidovenda.service.NegocioException;
 import com.algaworks.pedidovenda.util.jsf.FacesUtil;
 
 @Named
@@ -73,11 +74,17 @@ public class PesquisaClientesBean implements Serializable {
 	}
 	
 	public void excluir() {
-		clientes.remover(clienteSelecionado);
-		clientesFiltrados.remove(clienteSelecionado);
+		try {
+			clientes.remover(clienteSelecionado);
+			clientesFiltrados.remove(clienteSelecionado);
+			
+			FacesUtil.addInfoMessage("Cliente " + clienteSelecionado.getNome() 
+					+ " excluído com sucesso.");
+		} catch (NegocioException e) {
+			// TODO Auto-generated catch block
+			FacesUtil.addErrorMessage(e.getMessage());
+		}
 		
-		FacesUtil.addInfoMessage("Cliente " + clienteSelecionado.getNome() 
-				+ " excluído com sucesso.");
 	}
 	
 	
