@@ -17,6 +17,11 @@
 	    				update="@form" />
 	    		</p:toolbarGroup>
 	    		<p:toolbarGroup align="right">
+	    			<p:commandButton value="Exportar para XLS" ajax="false" 
+						disabled="#{empty pesquisaPedidosBean.pedidosFiltrados}">
+						<p:dataExporter type="xls" target="pedidosTable"
+							fileName="pedidos" postProcessor="#{pesquisaPedidosBean.posProcessarXls}" />
+					</p:commandButton>
 	    			<p:button value="Novo" outcome="/pedidos/CadastroPedido" />
 	    		</p:toolbarGroup>
 	    	</p:toolbar>
