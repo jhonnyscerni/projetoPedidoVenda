@@ -39,7 +39,7 @@ public class SelecaoClienteBean implements Serializable {
 		Map<String, Object> opcoes = new HashMap<>();
 		opcoes.put("modal", true);
 		opcoes.put("resizable", false);
-		opcoes.put("contentHeight", 470);
+		opcoes.put("height", 470);
 		
 		RequestContext.getCurrentInstance().openDialog("/dialogos/SelecaoCliente", opcoes, null);
 	}

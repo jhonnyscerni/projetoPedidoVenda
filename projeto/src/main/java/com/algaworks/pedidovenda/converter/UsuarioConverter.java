@@ -5,6 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.algaworks.pedidovenda.model.Usuario;
 import com.algaworks.pedidovenda.repository.UsuarioRepository;
 import com.algaworks.pedidovenda.util.cdi.CDIServiceLocator;
@@ -20,16 +22,16 @@ public class UsuarioConverter implements Converter {
     }
 
     @Override
-    public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        
-        Usuario retorno = null;
-        if (value != null) {
-            Long id = new Long(value);
-            retorno = repository.porId(id);
-        }
-        
-        return retorno;
-    }
+	public Object getAsObject(FacesContext context, UIComponent component, String value) {
+		Usuario retorno = null;
+		
+		if (StringUtils.isNotEmpty(value)) {
+			Long id = new Long(value);
+			retorno = repository.porId(id);
+		}
+		
+		return retorno;
+	}
     
 
     @Override

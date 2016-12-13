@@ -112,7 +112,4 @@ public class CadastroUsuarioBean implements Serializable {
 		this.grupoRaizes = grupoRaizes;
 	}
 	
-	
-
-	
 }

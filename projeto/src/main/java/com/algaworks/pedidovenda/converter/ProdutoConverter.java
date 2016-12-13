@@ -5,6 +5,8 @@ import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.algaworks.pedidovenda.model.Produto;
 import com.algaworks.pedidovenda.repository.ProdutoRepository;
 import com.algaworks.pedidovenda.util.cdi.CDIServiceLocator;
@@ -23,7 +25,7 @@ public class ProdutoConverter implements Converter {
 	public Object getAsObject(FacesContext context, UIComponent component, String value) {
 		Produto retorno = null;
 		
-		if (value != null) {
+		if (StringUtils.isNotEmpty(value)) {
 			Long id = new Long(value);
 			retorno = produtos.porId(id);
 		}
