@@ -38,7 +38,7 @@ public class LoginBean implements Serializable {
 	}
 	
 	public void login() throws ServletException, IOException {
-		RequestDispatcher dispatcher = request.getRequestDispatcher("/j_spring_security_check");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("/Login.xhtml");
 		dispatcher.forward(request, response);
 		
 		facesContext.responseComplete();

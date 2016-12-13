@@ -5,18 +5,18 @@
 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
 	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
-	<ui:define name="titulo">#{cadastroUsuarioBean.editando ? 'Edição de usuario' : 'Novo usuario'}</ui:define>
+	<ui:define name="titulo">#{cadastroUsuarioBean.editando ? 'Edição de usuario' : 'Novo Usuario'}</ui:define>
 
 
 	<ui:define name="corpo">
 		<f:metadata>
 			<o:viewParam name="usuario" value="#{cadastroUsuarioBean.usuario}" />
-			<f:viewAction action="#{cadastroProdutoBean.inicializar}" />
 		</f:metadata>
 		<h:form id="frmUsuario">
 			<p:focus />
-			<h1>#{cadastroUsuarioBean.editando ? 'Edição de usuario' : 'Novo
-				usuario'}</h1>
+			
+		<h1>#{cadastroUsuarioBean.editando ? 'Edição de Usuario' : 'Novo
+				Usuario'}</h1>
 
 			<p:messages autoUpdate="true" closable="true" />
 
