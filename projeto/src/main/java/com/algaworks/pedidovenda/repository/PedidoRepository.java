@@ -11,6 +11,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projection;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import com.algaworks.pedidovenda.model.Pedido;
@@ -22,14 +24,13 @@ public class PedidoRepository implements Serializable {
 
 	@Inject
 	private EntityManager manager;
-
-	@SuppressWarnings("unchecked")
-	public List<Pedido> filtrados(PedidoFilter filtro) {
-		Session session = this.manager.unwrap(Session.class);
+	
+	private Criteria criarCriteriaParaFiltro(PedidoFilter filtro){
+Session session = this.manager.unwrap(Session.class);
 		
 		Criteria criteria = session.createCriteria(Pedido.class)
 				// fazemos uma associação (join) com cliente e nomeamos como "c"
-				.createAlias("cliente", "c")
+				.createAlias("cliente", "cliente")
 				// fazemos uma associação (join) com vendedor e nomeamos como "v"
 				.createAlias("vendedor", "v");
 		
@@ -66,7 +67,23 @@ public class PedidoRepository implements Serializable {
 			criteria.add(Restrictions.in("status", filtro.getStatuses()));
 		}
 		
-		return criteria.addOrder(Order.asc("id")).list();
+		return criteria;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Pedido> filtrados(PedidoFilter filtro) {
+		Criteria criteria = criarCriteriaParaFiltro(filtro);
+		
+		criteria.setFirstResult(filtro.getPrimeiroRegistro());
+		criteria.setMaxResults(filtro.getQuantidadeRegistro());
+		
+		if (filtro.isAscendente() && filtro.getPropriedadeOrdenacao() != null) {
+			criteria.addOrder(Order.asc(filtro.getPropriedadeOrdenacao()));
+		}else if(filtro.getPropriedadeOrdenacao() != null){
+			criteria.addOrder(Order.desc(filtro.getPropriedadeOrdenacao()));
+		}
+		
+		return criteria.list();
 	}
 
 	public Pedido guardar(Pedido pedido) {
@@ -76,6 +93,13 @@ public class PedidoRepository implements Serializable {
 	public Pedido porId(Long id) {
 		// TODO Auto-generated method stub
 		return manager.find(Pedido.class, id);
+	}
+
+	public int quantidadeFiltrados(PedidoFilter filtro) {
+		Criteria criteria = criarCriteriaParaFiltro(filtro);
+		
+		criteria.setProjection(Projections.rowCount());
+		return ((Number)criteria.uniqueResult()).intValue();
 	}
 	
 }
